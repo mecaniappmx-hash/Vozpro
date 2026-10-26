@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#5146e5">
+<title>VozPro | Entrena tu voz</title>
+<style>
+:root{--ink:#20233a;--muted:#68708a;--purple:#5146e5;--blue:#6687f2;--pale:#f0f2ff;--line:#e4e7f2;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:#f7f8fc;color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{background:linear-gradient(120deg,#f0f1ff,#e9f7ff);padding:22px 18px 26px;border-bottom:1px solid var(--line)}
+.wrap{max-width:880px;margin:auto}.brand{font-weight:900;letter-spacing:.8px;font-size:25px;color:var(--purple)}.brand span{color:#7d8df5}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:1.4px;color:var(--purple);text-transform:uppercase;margin-top:22px}
+h1{font-size:clamp(27px,5vw,40px);line-height:1.1;margin:8px 0 10px;letter-spacing:-1px}.sub{color:var(--muted);line-height:1.5;max-width:620px;margin:0}
+main{padding:18px;max-width:880px;margin:auto}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 18px}
+.stat,.panel,.exercise{background:white;border:1px solid var(--line);border-radius:18px;padding:15px;box-shadow:0 5px 20px #27305c08}
+.stat strong{display:block;font-size:24px;color:var(--purple)}.stat small{color:var(--muted)}
+.tabs{display:flex;gap:8px;overflow:auto;padding:3px 0 14px}.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 15px;font-weight:750;color:var(--muted);white-space:nowrap;cursor:pointer}.tab.active{background:var(--purple);color:white;border-color:var(--purple)}
+.panel{padding:20px;margin-bottom:14px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.section-head h2{font-size:20px;margin:0}.pill{font-size:12px;font-weight:800;color:var(--purple);background:var(--pale);border-radius:999px;padding:7px 10px}
+.exercise{margin-top:10px;padding:15px;box-shadow:none;cursor:pointer;display:flex;gap:13px;align-items:flex-start}.exercise.selected{border:2px solid var(--purple);background:#fafaff;padding:14px}.num{width:36px;height:36px;flex:0 0 36px;border-radius:12px;background:var(--pale);display:grid;place-items:center;color:var(--purple);font-weight:900}.exercise h3{margin:1px 0 5px;font-size:16px}.exercise p{margin:0;color:var(--muted);font-size:14px;line-height:1.45}.exercise .duration{margin-left:auto;font-size:12px;color:var(--muted);white-space:nowrap}
+.prompt{background:linear-gradient(135deg,#f0efff,#edf8ff);border-radius:16px;padding:18px;margin:15px 0}.prompt small{color:var(--purple);font-weight:800;text-transform:uppercase;letter-spacing:1px}.prompt blockquote{font-size:20px;line-height:1.45;margin:10px 0 0;font-weight:750}
+button{font:inherit;cursor:pointer}.primary,.secondary,.danger{border:0;border-radius:12px;padding:12px 16px;font-weight:800}.primary{background:var(--purple);color:white}.secondary{background:#f0f1ff;color:var(--purple);border:1px solid #dfe2ff}.danger{background:#fff0f0;color:#a52b38}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.status{font-size:14px;color:var(--muted);margin:12px 0 0;line-height:1.5}.hidden{display:none!important}.meter{height:8px;border-radius:99px;background:#eaecf6;overflow:hidden;margin:8px 0 14px}.meter div{height:100%;background:linear-gradient(90deg,var(--purple),var(--blue));width:0%;transition:width .3s}
+label{font-size:14px;font-weight:750;display:block;margin:14px 0 7px}select,input[type=range]{width:100%}select{border:1px solid var(--line);border-radius:10px;padding:11px;background:white;color:var(--ink)}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}.result{background:#f8f9ff;border-radius:12px;padding:12px}.result strong{font-size:21px;display:block;color:var(--purple)}.result small{color:var(--muted)}
+footer{text-align:center;padding:25px 18px;color:var(--muted);font-size:12px;line-height:1.5}
+@media(max-width:560px){.stats{gap:7px}.stat{padding:11px}.stat strong{font-size:20px}.stat small{font-size:11px}.panel{padding:15px}.result-grid{grid-template-columns:1fr 1fr}.section-head{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="brand">VOZ<span>PRO</span></div>
+  <div class="eyebrow">Tu entrenador personal del habla</div>
+  <h1>Habla con claridad.<br>Exprésate con confianza.</h1>
+  <p class="sub">Entrenamientos cortos para practicar articulación, pronunciación y expresión oral, a tu ritmo.</p>
+</div></header>
+<main>
+  <div class="stats">
+    <div class="stat"><strong id="sessions">0</strong><small>Sesiones completadas</small></div>
+    <div class="stat"><strong id="minutes">0</strong><small>Minutos practicados</small></div>
+    <div class="stat"><strong id="streak">0</strong><small>Días de práctica*</small></div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" data-tab="train">Entrenar</button>
+    <button class="tab" data-tab="record">Mi grabación</button>
+    <button class="tab" data-tab="progress">Mi progreso</button>
+  </div>
+  <section id="train" class="view">
+    <div class="panel">
+      <div class="section-head"><h2>Tu rutina de hoy</h2><span class="pill">Principiante · 8 min</span></div>
+      <p class="status">Haz los ejercicios en orden. Mantén la mandíbula relajada y no fuerces la voz.</p>
+      <div class="exercise selected" data-ex="0"><div class="num">1</div><div><h3>Calentamiento y respiración</h3><p>Inhala cómodamente por la nariz y suelta el aire lentamente, sin levantar los hombros.</p></div><span class="duration">2 min</span></div>
+      <div class="exercise" data-ex="1"><div class="num">2</div><div><h3>Vocalización clara</h3><p>Pronuncia cada vocal con calma y después combina consonantes y vocales.</p></div><span class="duration">2 min</span></div>
+      <div class="exercise" data-ex="2"><div class="num">3</div><div><h3>Articulación</h3><p>Lee la frase despacio, exagerando suavemente los movimientos de labios y lengua.</p></div><span class="duration">2 min</span></div>
+      <div class="exercise" data-ex="3"><div class="num">4</div><div><h3>Expresión de ideas</h3><p>Explica una idea en tres frases: qué piensas, por qué y un ejemplo.</p></div><span class="duration">2 min</span></div>
+      <div class="prompt"><small id="promptLabel">Ejercicio 1 · Respiración</small><blockquote id="promptText">Respira con calma y suelta el aire de forma suave, sin apretar la garganta.</blockquote></div>
+      <div class="actions"><button class="secondary" id="prev">Anterior</button><button class="primary" id="next">Siguiente ejercicio</button><button class="secondary" id="startRecord">Grabar práctica</button></div>
+      <p class="status" id="trainStatus">Consejo: prioriza la comodidad y la claridad, no la velocidad.</p>
+    </div>
+  </section>
+  <section id="record" class="view hidden">
+    <div class="panel">
+      <div class="section-head"><h2>Mi grabación</h2><span class="pill">Análisis inicial</span></div>
+      <p class="status">Lee el texto de práctica o habla durante 20–40 segundos. La grabación se procesa en este dispositivo; no se envía a un servidor.</p>
+      <div class="prompt"><small>Texto de práctica</small><blockquote>“Quiero comunicar mis ideas con claridad. Hablo con calma, organizo mis pensamientos y doy ejemplos para que los demás me comprendan.”</blockquote></div>
+      <div class="actions"><button class="primary" id="recordBtn">● Iniciar grabación</button><button class="secondary" id="stopBtn" disabled>Detener</button><button class="secondary" id="playBtn" disabled>Escuchar</button></div>
+      <p class="status" id="recordStatus">Necesitas permitir el acceso al micrófono. En algunos navegadores, la grabación requiere HTTPS o localhost.</p>
+      <audio id="audioPlayback" controls class="hidden" style="width:100%;margin-top:12px"></audio>
+      <div id="analysis" class="hidden">
+        <h3>Resumen de la sesión</h3>
+        <div class="result-grid">
+          <div class="result"><strong id="duration">—</strong><small>Duración</small></div>
+          <div class="result"><strong id="volume">—</strong><small>Nivel de señal</small></div>
+          <div class="result"><strong id="selfScore">—</strong><small>Autoevaluación</small></div>
+        </div>
+        <label for="confidence">¿Qué tan clara sentiste tu voz? (1–5)</label>
+        <input id="confidence" type="range" min="1" max="5" value="3">
+        <p class="status" id="confidenceText">3 de 5 · Se sintió medianamente clara.</p>
+        <label for="notes">Nota personal (opcional)</label><input id="notes" placeholder="Ej. Me trabé en algunas palabras..." style="padding:11px;border:1px solid var(--line);border-radius:10px">
+        <div class="actions"><button class="primary" id="saveSession">Guardar sesión</button></div>
+      </div>
+    </div>
+  </section>
+  <section id="progress" class="view hidden">
+    <div class="panel"><div class="section-head"><h2>Mi progreso</h2><span class="pill">Guardado en este dispositivo</span></div>
+      <p class="status">VozPro registrará las sesiones que guardes. Los indicadores actuales son de práctica y autoevaluación; todavía no son una puntuación clínica ni un diagnóstico de pronunciación.</p>
+      <div class="result-grid">
+        <div class="result"><strong id="pSessions">0</strong><small>Sesiones</small></div>
+        <div class="result"><strong id="pMinutes">0</strong><small>Minutos totales</small></div>
+        <div class="result"><strong id="pClarity">—</strong><small>Claridad percibida</small></div>
+      </div>
+      <h3 style="margin-top:22px">Historial reciente</h3><div id="history" class="status">Aún no hay sesiones guardadas.</div>
+      <div class="actions"><button class="secondary" id="exportBtn">Exportar mis datos</button><button class="danger" id="clearBtn">Borrar historial</button></div>
+    </div>
+  </section>
+</main>
+<footer>*Los días se estiman según las fechas de las sesiones guardadas. MVP de práctica personal: el análisis automático de pronunciación y el inicio de sesión en la nube se incorporarán en una siguiente etapa.</footer>
+<script>
+const exercises=[
+ {title:"Calentamiento y respiración",label:"Ejercicio 1 · Respiración",text:"Respira con calma y suelta el aire de forma suave, sin apretar la garganta.",tip:"Mantén los hombros relajados. Si sientes mareo, detente y respira normalmente."},
+ {title:"Vocalización clara",label:"Ejercicio 2 · Vocalización",text:"A — E — I — O — U. Después: MA — ME — MI — MO — MU. Repite despacio y con la boca relajada.",tip:"Busca un sonido cómodo y claro; no grites ni fuerces la garganta."},
+ {title:"Articulación",label:"Ejercicio 3 · Articulación",text:"Tres tristes tigres tragan trigo en un trigal. Empieza lento; aumenta la velocidad solo si conservas la claridad.",tip:"Primero precisión, después velocidad. Divide la frase en partes si lo necesitas."},
+ {title:"Expresión de ideas",label:"Ejercicio 4 · Expresión",text:"Explica una idea en tres pasos: qué piensas, por qué lo piensas y un ejemplo concreto.",tip:"Haz una pausa breve entre cada idea y termina las frases sin apresurarte."}
+];
+let current=0, recorder=null, chunks=[], startedAt=0, currentBlob=null, currentDuration=0, currentSignal="—";
+const $=id=>document.getElementById(id);
+function getSessions(){try{return JSON.parse(localStorage.getItem("vozpro_sessions")||"[]")}catch(e){return []}}
+function setSessions(s){localStorage.setItem("vozpro_sessions",JSON.stringify(s))}
+function chooseExercise(i){current=Math.max(0,Math.min(exercises.length-1,i));document.querySelectorAll(".exercise").forEach((el,j)=>el.classList.toggle("selected",j===current));$("promptLabel").textContent=exercises[current].label;$("promptText").textContent=exercises[current].text;$("trainStatus").textContent=exercises[current].tip;$("prev").disabled=current===0;$("next").textContent=current===exercises.length-1?"Volver al inicio":"Siguiente ejercicio"}
+document.querySelectorAll(".exercise").forEach(el=>el.addEventListener("click",()=>chooseExercise(Number(el.dataset.ex))));
+$("prev").onclick=()=>chooseExercise(current-1);$("next").onclick=()=>chooseExercise(current===exercises.length-1?0:current+1);
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".view").forEach(v=>v.classList.toggle("hidden",v.id!==b.dataset.tab));if(b.dataset.tab==="progress")renderProgress()});
+function renderProgress(){const s=getSessions(),mins=Math.round(s.reduce((a,x)=>a+x.duration,0)/60);$("sessions").textContent=s.length;$("minutes").textContent=mins;$("pSessions").textContent=s.length;$("pMinutes").textContent=mins;const avg=s.filter(x=>x.clarity).map(x=>x.clarity);$("pClarity").textContent=avg.length?(avg.reduce((a,b)=>a+b,0)/avg.length).toFixed(1)+"/5":"—";const days=[...new Set(s.map(x=>x.date.slice(0,10)))].sort();let streak=0;const today=new Date();today.setHours(0,0,0,0);for(let d=new Date(today);;d.setDate(d.getDate()-1)){const k=d.toISOString().slice(0,10);if(days.includes(k))streak++;else if(streak===0&&k===today.toISOString().slice(0,10))continue;else break} $("streak").textContent=streak;$("history").innerHTML=s.length?s.slice().reverse().slice(0,8).map(x=>`<div style="padding:10px 0;border-bottom:1px solid #e8eaf4"><b>${new Date(x.date).toLocaleDateString("es-MX",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</b> · ${Math.round(x.duration)} s · claridad percibida ${x.clarity}/5${x.notes?`<br><span>${escapeHtml(x.notes)}</span>`:""}</div>`).join(""):"Aún no hay sesiones guardadas."}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+$("recordBtn").onclick=async()=>{if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||!window.MediaRecorder){$("recordStatus").textContent="Este navegador no permite grabar aquí. Abre VozPro desde un navegador moderno y una conexión segura (HTTPS).";return}try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});chunks=[];recorder=new MediaRecorder(stream);startedAt=Date.now();recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};recorder.onstop=()=>{currentDuration=(Date.now()-startedAt)/1000;currentBlob=new Blob(chunks,{type:recorder.mimeType||"audio/webm"});$("audioPlayback").src=URL.createObjectURL(currentBlob);$("audioPlayback").classList.remove("hidden");$("playBtn").disabled=false;$("analysis").classList.remove("hidden");$("duration").textContent=Math.round(currentDuration)+" s";$("volume").textContent=currentSignal;$("selfScore").textContent=$("confidence").value+"/5";$("recordStatus").textContent="Grabación lista. Escúchala y evalúa cómo sentiste tu claridad.";stream.getTracks().forEach(t=>t.stop())};recorder.start();$("recordBtn").disabled=true;$("stopBtn").disabled=false;$("recordStatus").textContent="Grabando… habla a un volumen natural y termina cuando quieras."}catch(e){$("recordStatus").textContent="No se pudo acceder al micrófono. Revisa los permisos del navegador y vuelve a intentarlo."}};
+$("stopBtn").onclick=()=>{if(recorder&&recorder.state!=="inactive"){recorder.stop();$("recordBtn").disabled=false;$("stopBtn").disabled=true}};
+$("playBtn").onclick=()=>{$("audioPlayback").play()};
+$("confidence").oninput=()=>{$("confidenceText").textContent=$("confidence").value+" de 5 · "+(["","Muy difícil de entender","Poco clara","Medianamente clara","Clara","Muy clara"][$("confidence").value])+".";$("selfScore").textContent=$("confidence").value+"/5"};
+$("saveSession").onclick=()=>{if(!currentBlob)return;const s=getSessions();s.push({date:new Date().toISOString(),duration:currentDuration,clarity:Number($("confidence").value),notes:$("notes").value.trim()});setSessions(s);$("recordStatus").textContent="Sesión guardada en este dispositivo. ¡Buen trabajo!";$("analysis").classList.add("hidden");$("notes").value="";currentBlob=null;renderProgress()};
+$("exportBtn").onclick=()=>{const blob=new Blob([JSON.stringify(getSessions(),null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="vozpro-progreso.json";a.click();URL.revokeObjectURL(a.href)};
+$("clearBtn").onclick=()=>{if(confirm("¿Seguro que quieres borrar todas las sesiones guardadas en este dispositivo?")){setSessions([]);renderProgress()}};
+renderProgress();chooseExercise(0);
+</script>
+</body></html>
